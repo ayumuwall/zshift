@@ -1,39 +1,40 @@
 # zshift
 
-**zsh のファイル選択を、もっと速く、もっと賢く。**
+**Smarter, faster file navigation for zsh.**
 
-`Ctrl+T` を押すだけで、ファイルやディレクトリをメタ情報付きで一覧表示。矢印キーでディレクトリをその場で潜り、`~` でホームに一発ジャンプ。fzf のパワーを活かしつつ、zsh ネイティブの操作感を壊さない――そんなファイルナビゲーションを実現します。
+[日本語](README.ja.md)
+
+Hit `Ctrl+T` and browse files and directories with fzf — navigate into folders with arrow keys, jump home with `~`, and insert clean paths into your command line. All without leaving zsh.
 
 ## Demo
 
-<!-- スクリーンキャストやスクリーンショットがあればここに追加 -->
 <!-- ![demo](assets/demo.gif) -->
 
 ## Why zshift?
 
-| 素の fzf `Ctrl+T` | zshift |
+| Stock fzf `Ctrl+T` | zshift |
 |---|---|
-| フラットな一覧を検索するだけ | **Shift+矢印でディレクトリを行き来** しながら探せる |
-| 選択するまで中身がわからない | ディレクトリは **水色**、ファイルは **グレー** で一目瞭然 |
-| ホームに戻るには打ち直し | **`~` キー一発** でホームへジャンプ |
-| パスが絶対パスで長い | `~/...` や `./...` の **短い表記** で自動挿入 |
-| 空ディレクトリで迷子 | 空なら自動で `..` を表示、**行き止まりなし** |
-| 権限エラーで無言 | **ピンクの警告メッセージ** でわかりやすく通知 |
+| Flat list, search only | **Browse directories** with Shift+arrows |
+| No visual distinction | **Cyan** = directory, **gray** = file |
+| Retype path to go home | **`~` key** jumps home instantly |
+| Long absolute paths | Auto-inserts short `~/…` or `./…` notation |
+| Dead end in empty dirs | Shows `..` automatically — **no dead ends** |
+| Silent on permission errors | **Pink warning message** on denied access |
 
 ## Features
 
-- **Shift+← / Shift+→** でディレクトリをインタラクティブに移動
-- **`~` キー** でホームディレクトリへ即座にジャンプ
-- **複数選択対応** ── `Tab` で複数ファイルを選んでまとめて挿入
-- `~/` 配下のパスは `~` 表記を保持したまま挿入
-- カレントディレクトリ配下は `./` 付きで挿入
-- 権限のないディレクトリに入ろうとすると **ピンクの警告** を表示
+- **Shift+← / Shift+→** — navigate directories interactively
+- **`~` key** — jump to home directory instantly
+- **Multi-select** — `Tab` to pick multiple files, insert all at once
+- Paths under `~/` are inserted with `~` notation preserved
+- Paths under current directory are inserted with `./` prefix
+- Permission errors shown as **pink inline warnings**
 
 ## Requirements
 
 - **zsh**
 - [**fzf**](https://github.com/junegunn/fzf)
-- [**zoxide**](https://github.com/ajeetdsouza/zoxide) ── `z` / `zi` による高速ディレクトリ移動
+- [**zoxide**](https://github.com/ajeetdsouza/zoxide) — fast directory jumping via `z` / `zi`
 
 ## Install
 
@@ -43,7 +44,7 @@
 brew install ayumuwall/tap/zshift
 ```
 
-インストール後、`.zshrc` に以下を追加してください:
+Then add to your `~/.zshrc`:
 
 ```zsh
 source $(brew --prefix)/share/zshift/zshift.zsh
@@ -62,7 +63,7 @@ zinit light ayumuwall/zshift
 github = "ayumuwall/zshift"
 ```
 
-### 手動
+### Manual
 
 ```zsh
 git clone https://github.com/ayumuwall/zshift.git ~/.zsh/zshift
@@ -71,46 +72,46 @@ echo 'source ~/.zsh/zshift/zshift.zsh' >> ~/.zshrc
 
 ## Usage
 
-### `Ctrl+T` ── ファイル選択
+### `Ctrl+T` — File picker
 
-コマンドラインのどこでも `Ctrl+T` を押すと、カレントディレクトリの中身が fzf で表示されます。
+Press `Ctrl+T` anywhere on the command line to browse the current directory:
 
 ```
-  Documents/          # 水色 = ディレクトリ
+  Documents/          # cyan = directory
   Downloads/
-  ./README.md         # グレーの ./ = ファイル
+  ./README.md         # gray ./ = file
   ./setup.sh
 
-  Shift+←→:ディレクトリ移動  ~:ホーム  Enter:確定
+  Shift+←→: navigate   ~: home   Enter: confirm
 ```
 
-### キー操作
+### Key bindings
 
-| キー | 動作 |
+| Key | Action |
 |---|---|
-| `Shift+→` | 選択中のディレクトリに入る |
-| `Shift+←` | 親ディレクトリに戻る |
-| `~` | ホームディレクトリへジャンプ |
-| `Tab` | 複数選択のトグル |
-| `Enter` | 確定してコマンドラインに挿入 |
-| `Esc` | キャンセル |
+| `Shift+→` | Enter selected directory |
+| `Shift+←` | Go to parent directory |
+| `~` | Jump to home directory |
+| `Tab` | Toggle multi-select |
+| `Enter` | Confirm and insert into command line |
+| `Esc` | Cancel |
 
-### `z` ── zoxide 連携
+### `z` — zoxide integration
 
-zshift は zoxide を `zi`（インタラクティブ選択）モードで初期化します。`z` と打つだけで、過去に訪れたディレクトリから fzf で選択できます。
+zshift initializes zoxide in `zi` (interactive) mode. Just type `z` to fuzzy-select from your recently visited directories.
 
 ## Tips
 
-- 入力途中のパスがあれば、そのパスを起点にブラウズを開始します
+- If you've already typed a partial path, `Ctrl+T` starts browsing from there:
   ```
-  vim src/<Ctrl+T>   # src/ の中身が表示される
+  vim src/<Ctrl+T>   # opens src/ contents
   ```
-- 元の fzf `Ctrl+T` は `Ctrl+G` に退避されるので、いつでも使えます
+- The original fzf `Ctrl+T` is remapped to `Ctrl+G`, so it's always available.
 
 ## Platform
 
-- **macOS** で動作確認済み
-- Linux では `stat` コマンドの差異により追加対応が必要です（PR 歓迎）
+- **macOS** — fully supported
+- **Linux** — requires `stat` adaptation (PRs welcome)
 
 ## License
 
