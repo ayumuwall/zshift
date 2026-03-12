@@ -18,8 +18,6 @@ Hit `Ctrl+T` and browse files and directories with fzf — navigate into folders
 | No visual distinction | **Cyan** = directory, **gray** = file |
 | Retype path to go home | **`~` key** jumps home instantly |
 | Long absolute paths | Auto-inserts short `~/…` or `./…` notation |
-| Dead end in empty dirs | Shows `..` automatically — **no dead ends** |
-| Silent on permission errors | **Pink warning message** on denied access |
 
 ## Features
 
