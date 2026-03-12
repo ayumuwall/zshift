@@ -9,7 +9,7 @@ class Zshift < Formula
   depends_on "zoxide"
 
   def install
-    share.install "zshift.zsh" => "zshift/zshift.zsh"
+    (share/"zshift").install "zshift.zsh"
   end
 
   def caveats
