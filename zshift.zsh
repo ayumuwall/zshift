@@ -52,9 +52,9 @@ fzf_path_aware_ctrl_t_shallow() {
   picks=$(b="$base"; eval "$_ZSHIFT_LIST_ALL_CMD" | \
     fzf --ansi --multi --height=100% --prompt="" \
         --header="Shift+←→:ディレクトリ移動  ~:ホーム　Enter:確定" \
-        --bind "shift-left:transform:d=${_d}; d=\${d/#\\~/$HOME}; if [[ -z \"\$d\" ]]; then b=\"\${_FZF_BASE}\"; pos=1; came_from=\"\"; else came_from=\$(cd \"\$(dirname \"\$d\")\" && pwd); if [[ \"\$came_from\" == \"/\" ]]; then b=\"/\"; pos=1; else b=\$(cd \"\$came_from\" && cd .. && pwd); pos=\$(command find -L \"\$b\" -mindepth 1 -maxdepth 1 -type d -print 2>/dev/null | awk -v target=\"\$came_from\" 'BEGIN{n=1; found=0} { if (\$0 == target) { print n; found=1; exit } n++ } END { if (!found) print 1 }'); fi; fi; [[ -z \"\$b\" ]] && b=\".\"; action=\"reload-sync(eval \\\"\\$_ZSHIFT_LIST_ALL_CMD\\\")+pos(\$pos)\"; printf '%s | d=%s | came_from=%s | b=%s | pos=%s | action=%s\n' \"\$(date '+%F %T')\" \"\$d\" \"\$came_from\" \"\$b\" \"\$pos\" \"\$action\" >> /tmp/zshift-debug.log; printf '%s' \"\$action\"" \
-        --bind "shift-right:reload(d=${_d}; d=\${d/#\\~/$HOME}; d=\${d% \\(\\~\\)}; next_b=\"\"; if [[ \"\$d\" == */.. || \"\$d\" == \"..\" ]]; then printf '\\r\\033[2K\\033[95m** cannot enter: .. **\\033[0m' > /dev/tty; b=\$(cd \"\$(dirname \"\$d\")\" && pwd); next_b=\"\$b\"; else if [[ -d \"\$d\" ]]; then if [[ ! -r \"\$d\" || ! -x \"\$d\" ]]; then printf '\\r\\033[2K\\033[95m** permission denied: %s **\\033[0m' \"\$d\" > /dev/tty; b=\$(cd \"\$(dirname \"\$d\")\" && pwd); next_b=\"\$b\"; else printf '\\r\\033[2K' > /dev/tty; b=\"\$d\"; next_b=\"\$b\"; fi; else printf '\\r\\033[2K' > /dev/tty; b=\$(cd \"\$(dirname \"\$d\")\" && pwd); next_b=\"\$b\"; fi; fi; [[ -z \"\$b\" ]] && b=\".\"; printf '%s | dir=right | d=%s | next_b=%s | query=%s\n' \"\$(date '+%F %T')\" \"\$d\" \"\$next_b\" \"\$FZF_QUERY\" >> /tmp/zshift-debug.log; eval \"\\$_ZSHIFT_LIST_ALL_CMD\")+transform-query(printf '%s' \"\\$FZF_QUERY\")" \
-        --bind "~:reload(b=\"$HOME\"; eval \"\\$_ZSHIFT_LIST_ALL_CMD\")+transform-query(printf '%s' \"\\$FZF_QUERY\")"
+        --bind "shift-left:transform:d=${_d}; d=\${d/#\\~/$HOME}; if [[ -z \"\$d\" ]]; then b=\"\${_FZF_BASE}\"; pos=1; came_from=\"\"; else came_from=\$(cd \"\$(dirname \"\$d\")\" && pwd); if [[ \"\$came_from\" == \"/\" ]]; then b=\"/\"; pos=1; else b=\$(cd \"\$came_from\" && cd .. && pwd); pos=\$(command find -L \"\$b\" -mindepth 1 -maxdepth 1 -type d -print 2>/dev/null | awk -v target=\"\$came_from\" 'BEGIN{n=1; found=0} { if (\$0 == target) { print n; found=1; exit } n++ } END { if (!found) print 1 }'); fi; fi; [[ -z \"\$b\" ]] && b=\".\"; printf '%s | d=%s | came_from=%s | b=%s | pos=%s\n' \"\$(date '+%F %T')\" \"\$d\" \"\$came_from\" \"\$b\" \"\$pos\" >> /tmp/zshift-debug.log; printf \"reload-sync(b=%s; eval \\\"\\\$_ZSHIFT_LIST_ALL_CMD\\\")+pos(%s)+clear-query\" \"\$b\" \"\$pos\"" \
+        --bind "shift-right:reload(d=${_d}; d=\${d/#\\~/$HOME}; d=\${d% \\(\\~\\)}; next_b=\"\"; if [[ \"\$d\" == */.. || \"\$d\" == \"..\" ]]; then printf '\\r\\033[2K\\033[95m** cannot enter: .. **\\033[0m' > /dev/tty; b=\$(cd \"\$(dirname \"\$d\")\" && pwd); next_b=\"\$b\"; else if [[ -d \"\$d\" ]]; then if [[ ! -r \"\$d\" || ! -x \"\$d\" ]]; then printf '\\r\\033[2K\\033[95m** permission denied: %s **\\033[0m' \"\$d\" > /dev/tty; b=\$(cd \"\$(dirname \"\$d\")\" && pwd); next_b=\"\$b\"; else printf '\\r\\033[2K' > /dev/tty; b=\"\$d\"; next_b=\"\$b\"; fi; else printf '\\r\\033[2K' > /dev/tty; b=\$(cd \"\$(dirname \"\$d\")\" && pwd); next_b=\"\$b\"; fi; fi; [[ -z \"\$b\" ]] && b=\".\"; printf '%s | dir=right | d=%s | next_b=%s | query=%s\n' \"\$(date '+%F %T')\" \"\$d\" \"\$next_b\" \"\$FZF_QUERY\" >> /tmp/zshift-debug.log; eval \"\$_ZSHIFT_LIST_ALL_CMD\")+clear-query" \
+        --bind "~:reload(b=\"$HOME\"; eval \"\$_ZSHIFT_LIST_ALL_CMD\")+clear-query"
   )
 
   unset _FZF_GRAY_FILE_AWK _FZF_CYAN_DIR_AWK _FZF_HOME _FZF_BASE _ZSHIFT_LIST_ALL_CMD
@@ -70,8 +70,8 @@ fzf_path_aware_ctrl_t_shallow() {
 
   # ←← ここから"~ をエスケープしない"挿入ロジック
   [[ -n "$orig" ]] && LBUFFER="${LBUFFER%$orig}"
-  local IFS=$'\n' p ins rest
-  for p in $picks; do
+  local p ins rest
+  for p in "${(f)picks}"; do
     p="${p% (~)}"
     if [[ "$p" == "." || "$p" == "./" || "$p" == "$PWD" ]]; then
       LBUFFER+="./ "
