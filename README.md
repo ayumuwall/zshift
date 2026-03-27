@@ -8,7 +8,7 @@ Hit `Ctrl+T` and browse files and directories with fzf — navigate into folders
 
 ## Screenshot
 
-![screenshot](assets/screenshot-1.png)
+![screenshot](assets/Screenshot.en.png)
 
 ## Why zshift?
 

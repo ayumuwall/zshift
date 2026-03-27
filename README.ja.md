@@ -8,7 +8,7 @@
 
 ## スクリーンショット
 
-![screenshot](assets/screenshot-1.png)
+![screenshot](assets/Screenshot.ja.png)
 
 ## なぜ zshift？
 
