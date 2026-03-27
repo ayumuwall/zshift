@@ -48,6 +48,12 @@ Then add to your `~/.zshrc`:
 source $(brew --prefix)/share/zshift/zshift.zsh
 ```
 
+Then reload your shell:
+
+```zsh
+source ~/.zshrc
+```
+
 ### zinit
 
 ```zsh

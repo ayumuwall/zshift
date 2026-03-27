@@ -48,6 +48,12 @@ brew install ayumuwall/tap/zshift
 source $(brew --prefix)/share/zshift/zshift.zsh
 ```
 
+設定を反映させます:
+
+```zsh
+source ~/.zshrc
+```
+
 ### zinit
 
 ```zsh
