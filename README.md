@@ -6,9 +6,9 @@
 
 Hit `Ctrl+T` and browse files and directories with fzf — navigate into folders with arrow keys, jump home with `~`, and insert clean paths into your command line. All without leaving zsh.
 
-## Demo
+## Screenshot
 
-<!-- ![demo](assets/demo.gif) -->
+![screenshot](assets/screenshot-1.png)
 
 ## Why zshift?
 
